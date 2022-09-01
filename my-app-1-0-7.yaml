@@ -6,4 +6,5 @@ spec:
   image: vfarcic/silly-demo:1.0.7
   port: 8080
   host: silly-demo.127.0.0.1.nip.io
+  token: xxxx
   replicas: 3

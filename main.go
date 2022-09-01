@@ -22,12 +22,14 @@ func main() {
 	r.Run(fmt.Sprintf(":%s", port))
 }
 
+// Controller declaration
 type Controller struct {
-	ApiVersion      string `json:"apiVersion"`
+	APIVersion      string `json:"apiVersion"`
 	Kind            string `json:"kind"`
 	meta.ObjectMeta `json:"metadata"`
 }
 
+// SyncRequest declaration
 type SyncRequest struct {
 	Parent Controller `json:"parent"`
 }
@@ -41,7 +43,7 @@ func slackHandler(c *gin.Context) {
 		return
 	}
 	request := &SyncRequest{}
-	// Unmarshal the JSON into the struct.
+	// Unmarshal the JSON into the struct
 	err = json.Unmarshal(body, request)
 	if err != nil {
 		println("JSON could not be unmarshalled")
@@ -52,7 +54,7 @@ func slackHandler(c *gin.Context) {
 	message := fmt.Sprintf(`API Version: %s
 Kind: %s
 Operation: %s`,
-		request.Parent.ApiVersion,
+		request.Parent.APIVersion,
 		request.Parent.Kind,
 		managedField.Operation)
 	println(message)
@@ -60,7 +62,7 @@ Operation: %s`,
 	channel := c.Query("channel")
 	// Throw error if channel is empty
 	if channel == "" {
-		channel = "#general"
+		channel = "XXXX"
 	}
 	// Get token from environment variable
 	token := os.Getenv("SLACK_TOKEN")

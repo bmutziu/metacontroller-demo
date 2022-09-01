@@ -36,12 +36,15 @@ spec:
                 type: string
               host:
                 type: string
+              token:
+                type: string
               replicas:
                 type: integer
                 default: 1
             required:
             - image
             - host
+            - token
     subresources:
      status: {}
 

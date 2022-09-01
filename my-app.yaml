@@ -5,4 +5,4 @@ metadata:
 spec:
   image: vfarcic/silly-demo:1.0.6
   port: 8080
-  host: silly-demo.127.0.0.1.nip.io
+  host: silly-demo.192.168.0.174.nip.io

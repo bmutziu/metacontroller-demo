@@ -12,6 +12,7 @@ class Controller(BaseHTTPRequestHandler):
     }
 
     image = parent.get("spec", {}).get("image")
+    token = parent.get("spec", {}).get("token")
     port = parent.get("spec", {}).get("port", "80")
     cpu_limit = parent.get("spec", {}).get("cpuLimit", "500m")
     mem_limit = parent.get("spec", {}).get("memLimit", "512Mi")
@@ -47,6 +48,12 @@ class Controller(BaseHTTPRequestHandler):
                 {
                   "name": "main",
                   "image": image,
+                  "env": [
+                    {
+                    "name": "SLACK_AUTH_TOKEN",
+                    "value": token
+                    }
+                  ],
                   "ports": [
                     {
                       "containerPort": port
@@ -105,13 +112,14 @@ class Controller(BaseHTTPRequestHandler):
           }
         },
         "spec": {
+          "ingressClassName": "nginx",
           "rules": [
             {
               "http": {
                 "paths": [
                   {
                     "path": "/",
-                    "pathType": "ImplementationSpecific",
+                    "pathType": "Prefix",
                     "backend": {
                       "service": {
                         "name": parent["metadata"]["name"],
@@ -134,9 +142,10 @@ class Controller(BaseHTTPRequestHandler):
 
   def do_POST(self):
     observed = json.loads(self.rfile.read(int(self.headers.get("content-length"))))
-    print("xxx")
-    # print(observed["children"])
-    print("yyy")
+    print("<<<")
+    print(observed["parent"])
+    print(observed["children"])
+    print(">>>")
     desired = self.sync(observed["parent"], observed["children"])
 
     self.send_response(200)
